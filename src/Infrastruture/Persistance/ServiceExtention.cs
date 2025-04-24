@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Context;
+using Persistance.Seed;
 
 namespace Persistance
 {
@@ -15,6 +16,8 @@ namespace Persistance
         public static void AddPersistance(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            DefaultUser.SeedUserAsync(services.BuildServiceProvider());
+            DefaultRoles.SeedRolesAsync(services.BuildServiceProvider());
             //return services;
         }
     }

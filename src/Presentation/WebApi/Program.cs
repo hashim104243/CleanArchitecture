@@ -24,7 +24,7 @@ namespace WebApi
                     
             //Add services to the container.
            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-               options.UseSqlServer());
+               options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddControllers();
 
             builder.Services.AddIdentity<ApplicationUser,ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
