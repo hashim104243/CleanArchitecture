@@ -34,8 +34,11 @@ namespace Persistance.Seed
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(defaultUser,"SuperAdmin");
+                    await userManager.AddToRoleAsync(defaultUser, "Basic");
+                    await userManager.AddToRoleAsync(defaultUser, "Admin");
+
                 }
-                }
+            }
 
             
         }

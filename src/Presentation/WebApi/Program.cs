@@ -1,14 +1,17 @@
 
 using System.Reflection;
+using System.Text;
 using Application;
 using Application.Repositores;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Persistance;
 using Persistance.Context;
 using Persistance.IdentityModel;
@@ -39,6 +42,19 @@ namespace WebApi
             builder.Services.AddPersistance(builder.Configuration);
 
             builder.Services.AddScoped<IProductRepositories, ProductRepositories>();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = "YourIssuer", // Set the issuer here
+                    ValidAudience = "YourAudience", // Set the audience here
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKey")) // Set your secret key here
+                };
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
